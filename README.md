@@ -1,6 +1,6 @@
 Project ini punya M. Riandra Rai Kurniawansyah
 
-maap pak app exe nya gbs saya pakai, ga mau kebuka.
+maap pak app untuk buat exe nya gbs saya pakai, ga mau kebuka.
 
 bapak run dari jar nya aja ya :) 
 
