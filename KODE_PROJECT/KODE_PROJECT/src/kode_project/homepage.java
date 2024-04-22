@@ -219,7 +219,7 @@ public class homepage extends javax.swing.JFrame {
     psmt.setString(1, codeTXT.getText());
     ResultSet rs = psmt.executeQuery();
     
-    int code = Integer.parseInt(codeTXT.getText());
+    String code = codeTXT.getText()
     if (rs.next()) {
         // Jika ada baris yang ditemukan dengan QuizID yang cocok
         this.dispose();
