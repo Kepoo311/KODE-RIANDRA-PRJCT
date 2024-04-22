@@ -26,7 +26,7 @@ public class QUIZ extends javax.swing.JFrame {
     public int sec = 0;
     public int min = 0;
     public int marks = 0;
-    public int IdQuiz = 0;
+    public String IdQuiz = 0;
     public int absen_siswa = 1;
     public String jumlah_soal;
     Timer time;
@@ -99,7 +99,7 @@ public class QUIZ extends javax.swing.JFrame {
         initComponents();
     }
 
-    public QUIZ(int QuizID, int absen) {
+    public QUIZ(String QuizID, int absen) {
         IdQuiz = QuizID;
         absen_siswa = absen;
         initComponents();
@@ -535,7 +535,7 @@ public class QUIZ extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new QUIZ(901,1).setVisible(true);
+                new QUIZ("901",1).setVisible(true);
             }
         });
     }
