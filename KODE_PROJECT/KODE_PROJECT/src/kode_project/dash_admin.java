@@ -5,7 +5,6 @@
 package kode_project;
 
 import java.security.SecureRandom;
-import java.util.Random;
 import javax.swing.JOptionPane;
 
 /**
@@ -36,6 +35,8 @@ public class dash_admin extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         addQuiz = new javax.swing.JButton();
+        editQUIZ = new javax.swing.JButton();
+        checkQuizBut = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
 
@@ -59,21 +60,52 @@ public class dash_admin extends javax.swing.JFrame {
             }
         });
 
+        editQUIZ.setBackground(new java.awt.Color(25, 48, 78));
+        editQUIZ.setFont(new java.awt.Font("Montserrat", 0, 24)); // NOI18N
+        editQUIZ.setForeground(new java.awt.Color(255, 255, 255));
+        editQUIZ.setText("Edit Quiz ");
+        editQUIZ.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        editQUIZ.setBorderPainted(false);
+        editQUIZ.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editQUIZActionPerformed(evt);
+            }
+        });
+
+        checkQuizBut.setBackground(new java.awt.Color(25, 48, 78));
+        checkQuizBut.setFont(new java.awt.Font("Montserrat", 0, 24)); // NOI18N
+        checkQuizBut.setForeground(new java.awt.Color(255, 255, 255));
+        checkQuizBut.setText("all Quiz");
+        checkQuizBut.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        checkQuizBut.setBorderPainted(false);
+        checkQuizBut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkQuizButActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(510, 510, 510)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(382, Short.MAX_VALUE)
                 .addComponent(addQuiz)
-                .addContainerGap(547, Short.MAX_VALUE))
+                .addGap(81, 81, 81)
+                .addComponent(editQUIZ)
+                .addGap(74, 74, 74)
+                .addComponent(checkQuizBut, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(270, 270, 270))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(258, Short.MAX_VALUE)
-                .addComponent(addQuiz, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(239, 239, 239))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(259, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addQuiz, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(editQUIZ, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(checkQuizBut, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(238, 238, 238))
         );
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 140, 1184, 570));
@@ -81,7 +113,7 @@ public class dash_admin extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Montserrat", 0, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Dashboard");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 20, 270, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 20, 270, -1));
 
         jButton3.setBackground(new java.awt.Color(25, 48, 78));
         jButton3.setFont(new java.awt.Font("Montserrat", 0, 24)); // NOI18N
@@ -94,7 +126,7 @@ public class dash_admin extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1280, 10, 137, 73));
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 10, 137, 73));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -144,6 +176,16 @@ public class dash_admin extends javax.swing.JFrame {
          quizsoal.setVisible(true);
     }//GEN-LAST:event_addQuizActionPerformed
 
+    private void editQUIZActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editQUIZActionPerformed
+            this.dispose();
+            new editQuiz(absen_siswa).setVisible(true);
+    }//GEN-LAST:event_editQUIZActionPerformed
+
+    private void checkQuizButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkQuizButActionPerformed
+      this.dispose();
+      new allQuiz(absen_siswa).setVisible(true);
+    }//GEN-LAST:event_checkQuizButActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -189,13 +231,15 @@ public class dash_admin extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new dash_admin(1).setVisible(true);
+                new dash_admin(99).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addQuiz;
+    private javax.swing.JButton checkQuizBut;
+    private javax.swing.JButton editQUIZ;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

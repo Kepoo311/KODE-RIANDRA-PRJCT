@@ -4,8 +4,16 @@
  */
 package kode_project;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.*;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import org.apache.poi.ss.usermodel.*;
 
 /**
  *
@@ -16,32 +24,33 @@ public class quizsoal extends javax.swing.JFrame {
     /**
      * Creates new form dashboard
      */
-int absen_siswa = 0;
+    int absen_siswa = 0;
+
     public quizsoal(String QuizID, int absen_siswa) {
         initComponents();
-        
+
         this.absen_siswa = absen_siswa;
         try {
-        String sql = "SELECT * FROM question WHERE QuizID = ?";
-        java.sql.Connection conn = (java.sql.Connection) koneksi.koneksiDB();
-        PreparedStatement psmt = conn.prepareStatement(sql);
-        psmt.setString(1, QuizID);
-        ResultSet rs = psmt.executeQuery();
+            String sql = "SELECT * FROM question WHERE QuizID = ?";
+            java.sql.Connection conn = (java.sql.Connection) koneksi.koneksiDB();
+            PreparedStatement psmt = conn.prepareStatement(sql);
+            psmt.setString(1, QuizID);
+            ResultSet rs = psmt.executeQuery();
 
-        int nomor_soal = 0;
-        while (rs.next()) {
-            nomor_soal++;
+            int nomor_soal = 0;
+            while (rs.next()) {
+                nomor_soal++;
+            }
+
+            nomor_soal++; // Menambahkan 1 karena nomor soal baru
+
+            String str = String.valueOf(nomor_soal);
+            nomorSoalTXT.setText(str);
+
+            QuizIdTXT.setText(QuizID);
+        } catch (Exception e) {
+            JOptionPane.showConfirmDialog(this, e);
         }
-
-        nomor_soal++; // Menambahkan 1 karena nomor soal baru
-
-        String str = String.valueOf(nomor_soal);
-        nomorSoalTXT.setText(str);
-
-        QuizIdTXT.setText(QuizID);
-    } catch (Exception e) {
-        JOptionPane.showConfirmDialog(this, e);
-    }
     }
 
     /**
@@ -74,6 +83,7 @@ int absen_siswa = 0;
         QuizIdTXT = new javax.swing.JLabel();
         saveBut = new javax.swing.JButton();
         clearBut = new javax.swing.JButton();
+        clearBut1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         exitBut1 = new javax.swing.JButton();
 
@@ -86,32 +96,41 @@ int absen_siswa = 0;
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setBackground(new java.awt.Color(10, 14, 24));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Montserrat", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Quiz ID :");
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(279, 24, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Montserrat", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Nomor Soal :");
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(279, 83, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Montserrat", 0, 24)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Question :");
+        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(279, 149, -1, -1));
 
         QuestionTXT.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.add(QuestionTXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(418, 150, 690, 36));
 
         jLabel5.setFont(new java.awt.Font("Montserrat", 0, 24)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Option 1 :");
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(279, 215, -1, -1));
 
         Opt1TXT.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.add(Opt1TXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(418, 216, 690, 36));
 
         Opt2TXT.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.add(Opt2TXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(418, 282, 690, 36));
 
         jLabel6.setFont(new java.awt.Font("Montserrat", 0, 24)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Option 2 :");
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(279, 281, -1, -1));
 
         Opt3TXT.setBackground(new java.awt.Color(255, 255, 255));
         Opt3TXT.addActionListener(new java.awt.event.ActionListener() {
@@ -119,30 +138,44 @@ int absen_siswa = 0;
                 Opt3TXTActionPerformed(evt);
             }
         });
+        jPanel2.add(Opt3TXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(418, 348, 690, 36));
 
         jLabel7.setFont(new java.awt.Font("Montserrat", 0, 24)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Option 3 :");
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(279, 347, -1, -1));
 
         Opt4TXT.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.add(Opt4TXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(418, 414, 690, 36));
 
         jLabel8.setFont(new java.awt.Font("Montserrat", 0, 24)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Option 4 :");
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(279, 413, -1, -1));
 
         AnswerTXT.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.add(AnswerTXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(418, 480, 690, 36));
 
         jLabel9.setFont(new java.awt.Font("Montserrat", 0, 24)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Answer :");
+        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(279, 479, -1, -1));
 
         nomorSoalTXT.setFont(new java.awt.Font("Montserrat", 0, 24)); // NOI18N
         nomorSoalTXT.setForeground(new java.awt.Color(255, 255, 255));
         nomorSoalTXT.setText("00");
+        jPanel2.add(nomorSoalTXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 83, -1, -1));
 
         QuizIdTXT.setFont(new java.awt.Font("Montserrat", 0, 24)); // NOI18N
         QuizIdTXT.setForeground(new java.awt.Color(255, 255, 255));
         QuizIdTXT.setText("00");
+        QuizIdTXT.setToolTipText("Click to copy");
+        QuizIdTXT.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                QuizIdTXTMousePressed(evt);
+            }
+        });
+        jPanel2.add(QuizIdTXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(402, 24, -1, -1));
 
         saveBut.setBackground(new java.awt.Color(25, 48, 78));
         saveBut.setFont(new java.awt.Font("Montserrat", 0, 24)); // NOI18N
@@ -153,6 +186,7 @@ int absen_siswa = 0;
                 saveButActionPerformed(evt);
             }
         });
+        jPanel2.add(saveBut, new org.netbeans.lib.awtextra.AbsoluteConstraints(263, 548, 137, 73));
 
         clearBut.setBackground(new java.awt.Color(25, 48, 78));
         clearBut.setFont(new java.awt.Font("Montserrat", 0, 24)); // NOI18N
@@ -163,99 +197,20 @@ int absen_siswa = 0;
                 clearButActionPerformed(evt);
             }
         });
+        jPanel2.add(clearBut, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 550, 137, 73));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(263, 263, 263)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addComponent(jLabel1)
-                            .addGap(18, 18, 18)
-                            .addComponent(QuizIdTXT))
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addComponent(jLabel2)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(nomorSoalTXT))
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addComponent(jLabel4)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(QuestionTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 690, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addComponent(jLabel7)
-                            .addGap(18, 18, 18)
-                            .addComponent(Opt3TXT, javax.swing.GroupLayout.PREFERRED_SIZE, 690, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(AnswerTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 690, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addGap(18, 18, 18)
-                                .addComponent(Opt4TXT, javax.swing.GroupLayout.PREFERRED_SIZE, 690, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(Opt1TXT, javax.swing.GroupLayout.PREFERRED_SIZE, 690, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(18, 18, 18)
-                                .addComponent(Opt2TXT, javax.swing.GroupLayout.PREFERRED_SIZE, 690, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(saveBut, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(clearBut, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(565, 565, 565)))
-                .addContainerGap(322, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(QuizIdTXT))
-                .addGap(29, 29, 29)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(nomorSoalTXT))
-                .addGap(36, 36, 36)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(QuestionTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(Opt1TXT, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(Opt2TXT, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(Opt3TXT, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(Opt4TXT, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(AnswerTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(saveBut, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(clearBut, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(39, 39, 39))
-        );
+        clearBut1.setBackground(new java.awt.Color(25, 48, 78));
+        clearBut1.setFont(new java.awt.Font("Montserrat", 0, 24)); // NOI18N
+        clearBut1.setForeground(new java.awt.Color(255, 255, 255));
+        clearBut1.setText("Import");
+        clearBut1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearBut1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(clearBut1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 550, 137, 73));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 111, 1430, 660));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 111, 1420, 660));
 
         jLabel3.setFont(new java.awt.Font("Montserrat", 0, 48)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -303,22 +258,23 @@ int absen_siswa = 0;
                 String opt3 = Opt3TXT.getText();
                 String opt4 = Opt4TXT.getText();
                 String answer = AnswerTXT.getText();
-                
-                 java.sql.Connection conn = (java.sql.Connection) koneksi.koneksiDB();
-                 PreparedStatement psmt = conn.prepareStatement("INSERT INTO question(QuizID, nomor_soal, Question, OptionA, OptionB, OptionC, OptionD, CorrectAnswer) VALUES(?,?,?,?,?,?,?,?)");
-                 psmt.setString(1, ID);
-                 psmt.setInt(2, nomorINT);
-                 psmt.setString(3, question);
-                 psmt.setString(4, opt1);
-                 psmt.setString(5, opt2);
-                 psmt.setString(6, opt3);
-                 psmt.setString(7, opt4);
-                 psmt.setString(8, answer);
-                 psmt.execute();
-                 JOptionPane.showConfirmDialog(this, "Succes Tambah Soal");
-                  this.dispose();
-                 new quizsoal(ID,absen_siswa).setVisible(true);
-                 
+
+                java.sql.Connection conn = (java.sql.Connection) koneksi.koneksiDB();
+                PreparedStatement psmt = conn.prepareStatement("INSERT INTO question(QuizID, nomor_soal, Question, OptionA, OptionB, OptionC, OptionD, CorrectAnswer) VALUES(?,?,?,?,?,?,?,?)");
+                psmt.setString(1, ID);
+                psmt.setInt(2, nomorINT);
+                psmt.setString(3, question);
+                psmt.setString(4, opt1);
+                psmt.setString(5, opt2);
+                psmt.setString(6, opt3);
+                psmt.setString(7, opt4);
+                psmt.setString(8, answer);
+                psmt.execute();
+                JOptionPane.showConfirmDialog(this, "Succes Tambah Soal");
+                saveQuizID();
+                this.dispose();
+                new quizsoal(ID, absen_siswa).setVisible(true);
+
             } catch (Exception e) {
                 JOptionPane.showConfirmDialog(this, e);
                 System.out.print(e);
@@ -327,9 +283,43 @@ int absen_siswa = 0;
 
     }//GEN-LAST:event_saveButActionPerformed
 
+public void saveQuizID() {
+    try {
+        String checkSQL = "SELECT COUNT(*) FROM quizid WHERE QuizID = ?";
+        java.sql.Connection conn = (java.sql.Connection) koneksi.koneksiDB();
+        PreparedStatement checkStatement = conn.prepareStatement(checkSQL);
+        checkStatement.setString(1, QuizIdTXT.getText());
+        ResultSet resultSet = checkStatement.executeQuery();
+        resultSet.next();
+        int count = resultSet.getInt(1);
+        if (count > 0) {
+            return;
+        }
+
+        String insertSQL = "INSERT INTO quizid(user_id, QuizID, started) VALUES(?, ?, ?)";
+        PreparedStatement psmt = conn.prepareStatement(insertSQL);
+        psmt.setInt(1, absen_siswa);
+        psmt.setString(2, QuizIdTXT.getText());
+        psmt.setBoolean(3, false);
+        psmt.execute();
+        JOptionPane.showMessageDialog(this, "Success Save QuizID!!");
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, e.getMessage());
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, e);
+    }
+}
+
+    
+    private static void copyToClipboard(String text) {
+        StringSelection selection = new StringSelection(text);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(selection, null);
+    }
+
     private void exitBut1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitBut1ActionPerformed
-          int a = JOptionPane.showConfirmDialog(this, "Are you sure want to exit?", "Select", JOptionPane.OK_CANCEL_OPTION);
-        if (a == 0 ){
+        int a = JOptionPane.showConfirmDialog(this, "Are you sure want to exit?", "Select", JOptionPane.OK_CANCEL_OPTION);
+        if (a == 0) {
             this.dispose();
             new dash_admin(absen_siswa).setVisible(true);
         }
@@ -347,6 +337,73 @@ int absen_siswa = 0;
     private void Opt3TXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Opt3TXTActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_Opt3TXTActionPerformed
+
+    private void QuizIdTXTMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_QuizIdTXTMousePressed
+        copyToClipboard(QuizIdTXT.getText());
+        JOptionPane.showMessageDialog(this, "Succes!, Copy code to clipboard!");
+    }//GEN-LAST:event_QuizIdTXTMousePressed
+
+    private void clearBut1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBut1ActionPerformed
+        importDataFromExcel();
+    }//GEN-LAST:event_clearBut1ActionPerformed
+
+    private void importDataFromExcel() {
+        JFileChooser fileChooser = new JFileChooser();
+        int returnValue = fileChooser.showOpenDialog(null);
+
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            String excelFilePath = selectedFile.getAbsolutePath();
+
+            try {
+                String ID = QuizIdTXT.getText();
+                FileInputStream inputStream = new FileInputStream(excelFilePath);
+                Workbook workbook = WorkbookFactory.create(inputStream);
+
+                String sql = "INSERT INTO question(QuizID, nomor_soal, Question, OptionA, OptionB, OptionC, OptionD, CorrectAnswer) VALUES(?,?,?,?,?,?,?,?)";
+                java.sql.Connection conn = (java.sql.Connection) koneksi.koneksiDB();
+                PreparedStatement psmt = conn.prepareStatement(sql);
+
+                Sheet sheet = workbook.getSheetAt(0);
+                 boolean firstRow = true;
+                for (Row row : sheet) {
+                     if (firstRow) { // Skip the first row (header)
+                        firstRow = false;
+                        continue;
+                    }
+                    
+                    psmt.clearParameters();
+                    psmt.setString(1, ID);
+                    psmt.setInt(2,  (int) row.getCell(0).getNumericCellValue());
+                    psmt.setString(3, row.getCell(1).getStringCellValue());
+                    psmt.setString(4, row.getCell(2).getStringCellValue());
+                    psmt.setString(5, row.getCell(3).getStringCellValue());
+                    psmt.setString(6, row.getCell(4).getStringCellValue());
+                    psmt.setString(7, row.getCell(5).getStringCellValue());
+                    psmt.setString(8, row.getCell(6).getStringCellValue());
+                    // Add more parameters as needed for additional columns
+
+                    psmt.executeUpdate();
+                }
+
+                workbook.close();
+                inputStream.close();
+
+                JOptionPane.showConfirmDialog(this, "Status: Data imported successfully.");
+                saveQuizID();
+                this.dispose();
+                new dash_admin(absen_siswa).setVisible(true);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                JOptionPane.showConfirmDialog(this, "Status: Error reading Excel file.");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showConfirmDialog(this, "Status: Error importing data.");
+            }
+        } else {
+            JOptionPane.showConfirmDialog(this, "Status: No file selected.");
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -379,7 +436,7 @@ int absen_siswa = 0;
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new quizsoal("0",0).setVisible(true);
+                new quizsoal("0", 0).setVisible(true);
             }
         });
     }
@@ -393,6 +450,7 @@ int absen_siswa = 0;
     private javax.swing.JTextField QuestionTXT;
     private javax.swing.JLabel QuizIdTXT;
     private javax.swing.JButton clearBut;
+    private javax.swing.JButton clearBut1;
     private javax.swing.JButton exitBut1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

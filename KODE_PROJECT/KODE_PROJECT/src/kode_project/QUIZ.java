@@ -26,7 +26,7 @@ public class QUIZ extends javax.swing.JFrame {
     public int sec = 0;
     public int min = 0;
     public int marks = 0;
-    public String IdQuiz = 0;
+    public String IdQuiz = "901";
     public int absen_siswa = 1;
     public String jumlah_soal;
     Timer time;
@@ -84,9 +84,23 @@ public class QUIZ extends javax.swing.JFrame {
     }
 
     public void submit() {
+        String nama = namaLB.getText();
+        int jmlh_bener = Integer.parseInt(marksLB.getText());
+        double nilai = ((double) jmlh_bener / Integer.parseInt(jumlah_soal)) * 100;
+
         try {
+            String sqlInsert = "INSERT INTO quiz_result(QuizID, jmlh_soal , nama, absen, jmlh_benar, nilai) VALUES (?, ?, ?, ?, ?, ?)";
             java.sql.Connection conn = (java.sql.Connection) koneksi.koneksiDB();
             Statement st = (Statement) conn.createStatement();
+            PreparedStatement psmt = conn.prepareStatement(sqlInsert);
+            psmt.setString(1, IdQuiz);
+            psmt.setString(2, jumlah_soal);
+            psmt.setString(3, nama);
+            psmt.setInt(4, absen_siswa);
+            psmt.setInt(5, jmlh_bener);
+            psmt.setDouble(6, nilai);
+            psmt.execute();
+
             st.executeUpdate("UPDATE user SET marks = '" + marks + "' WHERE absen = '" + absen_siswa + "' ");
             this.dispose();
             new homepage(absen_siswa).setVisible(true);
@@ -108,7 +122,7 @@ public class QUIZ extends javax.swing.JFrame {
             String sql = "SELECT * FROM user WHERE absen= ? ";
             java.sql.Connection conn = (java.sql.Connection) koneksi.koneksiDB();
             PreparedStatement psmt = conn.prepareStatement(sql);
-            psmt.setInt(1,absen_siswa);
+            psmt.setInt(1, absen_siswa);
             ResultSet rs = psmt.executeQuery();
             while (rs.next()) {
                 namaLB.setText(rs.getString("nama"));
@@ -468,8 +482,17 @@ public class QUIZ extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         int a = JOptionPane.showConfirmDialog(null, "Yakin?", "Select", JOptionPane.YES_NO_OPTION);
         if (a == 0) {
-            answerCheck();
-            submit();
+            try {
+                String sql = "DELETE FROM temp_jointb WHERE absen = ?";
+                java.sql.Connection conn = (java.sql.Connection) koneksi.koneksiDB();
+                PreparedStatement psmt = conn.prepareStatement(sql);
+                psmt.setInt(1, absen_siswa);
+                psmt.execute();
+                answerCheck();
+                submit();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e);
+            }
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -535,7 +558,7 @@ public class QUIZ extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new QUIZ("901",1).setVisible(true);
+                new QUIZ("901", 1).setVisible(true);
             }
         });
     }

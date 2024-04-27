@@ -6,6 +6,7 @@ package kode_project;
  */
 import java.sql.*;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author venti
@@ -20,32 +21,34 @@ public class homepage extends javax.swing.JFrame {
     }
     int absen_siswa;
     int is_admin;
-    public homepage(int absen){
-         initComponents();
-         absen_siswa = absen;
-         
-         try {
-             String sql = "SELECT * FROM user WHERE absen= ? ";
+
+    public homepage(int absen) {
+        initComponents();
+        absen_siswa = absen;
+
+        try {
+            String sql = "SELECT * FROM user WHERE absen= ? ";
             java.sql.Connection conn = (java.sql.Connection) koneksi.koneksiDB();
             PreparedStatement psmt = conn.prepareStatement(sql);
-            psmt.setInt(1,absen_siswa);
+            psmt.setInt(1, absen_siswa);
             ResultSet rs = psmt.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 latestScoreTXT.setText(rs.getString("marks"));
                 username.setText(rs.getString("nama"));
                 is_admin = rs.getInt("is_admin");
             }
-            
-            if(is_admin == 1){
+
+            if (is_admin == 1) {
                 adminBut.setVisible(true);
             } else {
                 adminBut.setVisible(false);
             }
-           
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e);
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -69,10 +72,10 @@ public class homepage extends javax.swing.JFrame {
         codeTXT = new javax.swing.JTextField();
         jButton5 = new javax.swing.JButton();
         adminBut = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 204, 204));
-        setUndecorated(true);
         setSize(new java.awt.Dimension(1440, 760));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -173,7 +176,7 @@ public class homepage extends javax.swing.JFrame {
                 jButton5ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(238, 430, 216, 63));
+        jPanel2.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 430, 216, 63));
 
         adminBut.setBackground(new java.awt.Color(25, 48, 78));
         adminBut.setFont(new java.awt.Font("Segoe UI Black", 0, 24)); // NOI18N
@@ -187,17 +190,29 @@ public class homepage extends javax.swing.JFrame {
         });
         jPanel2.add(adminBut, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 500, 216, 63));
 
+        jButton6.setBackground(new java.awt.Color(25, 48, 78));
+        jButton6.setFont(new java.awt.Font("Segoe UI Black", 0, 24)); // NOI18N
+        jButton6.setForeground(new java.awt.Color(255, 255, 255));
+        jButton6.setText("HISTORY");
+        jButton6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 430, 216, 63));
+
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 260, 690, 590));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1320, 892));
 
-        setSize(new java.awt.Dimension(1309, 892));
+        setSize(new java.awt.Dimension(1325, 900));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         int a = JOptionPane.showConfirmDialog(this, "Are you sure want to logout?", "Select", JOptionPane.OK_CANCEL_OPTION);
-        if (a == 0 ){
+        if (a == 0) {
             this.dispose();
             new login().setVisible(true);
         }
@@ -212,25 +227,44 @@ public class homepage extends javax.swing.JFrame {
     }//GEN-LAST:event_codeTXTActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-      try {
-    String sql = "SELECT * FROM question WHERE QuizID=?";
-    java.sql.Connection conn = (java.sql.Connection) koneksi.koneksiDB();
-    PreparedStatement psmt = conn.prepareStatement(sql);
-    psmt.setString(1, codeTXT.getText());
-    ResultSet rs = psmt.executeQuery();
-    
-    String code = codeTXT.getText()
-    if (rs.next()) {
-        // Jika ada baris yang ditemukan dengan QuizID yang cocok
-        this.dispose();
-        new QUIZ(code,absen_siswa).setVisible(true);
-    } else {
-        // Jika tidak ada baris yang ditemukan
-        JOptionPane.showMessageDialog(this, "NO QUIZ FOUND BLOK!!!!!");
-    }
-} catch (Exception e) {
-    JOptionPane.showMessageDialog(this, e);
-}
+        if (codeTXT.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "The code still blank!");
+            return;
+        }
+        try {
+            String sql = "SELECT * FROM question WHERE QuizID=?";
+            java.sql.Connection conn = (java.sql.Connection) koneksi.koneksiDB();
+            PreparedStatement psmt = conn.prepareStatement(sql);
+            psmt.setString(1, codeTXT.getText());
+            ResultSet rs = psmt.executeQuery();
+
+            String code = codeTXT.getText();
+
+            sql = "INSERT INTO temp_jointb(quizid,nama,absen,status) VALUES(?,?,?,?)";
+            psmt = conn.prepareStatement(sql);
+            psmt.setString(1, codeTXT.getText());
+            psmt.setString(2, username.getText());
+            psmt.setInt(3, absen_siswa);
+
+            if (rs.next()) {
+                if (checkStatus(code)) {
+                    psmt.setString(4, "ngerjain");
+                    psmt.execute();
+                    this.dispose();
+                    new QUIZ(code, absen_siswa).setVisible(true);
+                } else {
+                    psmt.setString(4, "join");
+                    psmt.execute();
+                    this.dispose();
+                    new waitingRoom(code, absen_siswa).setVisible(true);
+                }
+            } else {
+                // Jika tidak ada baris yang ditemukan
+                JOptionPane.showMessageDialog(this, "NO QUIZ FOUND BLOK!!!!!");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
 
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -238,6 +272,32 @@ public class homepage extends javax.swing.JFrame {
         this.dispose();
         new dash_admin(absen_siswa).setVisible(true);
     }//GEN-LAST:event_adminButActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        this.dispose();
+        new history_score(absen_siswa).setVisible(true);
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private boolean checkStatus(String id) {
+        try {
+            String sql = "SELECT * FROM quizid WHERE QuizID = ?";
+            java.sql.Connection conn = (java.sql.Connection) koneksi.koneksiDB();
+            PreparedStatement psmt = conn.prepareStatement(sql);
+            psmt.setString(1, id);
+            ResultSet rs = psmt.executeQuery();
+            boolean status = false;
+
+            while (rs.next()) {
+                status = rs.getBoolean("started");
+            }
+
+            return status;
+
+        } catch (Exception e) {
+            JOptionPane.showConfirmDialog(this, e);
+        }
+        return false;
+    }
 
     /**
      * @param args the command line arguments
@@ -279,6 +339,7 @@ public class homepage extends javax.swing.JFrame {
     private javax.swing.JTextField codeTXT;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
