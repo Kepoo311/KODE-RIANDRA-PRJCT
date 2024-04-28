@@ -263,14 +263,16 @@ public class allQuiz extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
    private void buttonOn(){
-       viewScoreBut.setVisible(true);
+      viewJoinBut.setEnabled(true);
+       viewScoreBut.setEnabled(true);
        StartBut.setEnabled(true);
        StopBut.setEnabled(true);
        CopyBut.setEnabled(true);
    }
     
    private void buttonOff(){
-       viewScoreBut.setVisible(false);
+       viewJoinBut.setEnabled(false);
+       viewScoreBut.setEnabled(false);
        StartBut.setEnabled(false);
        StopBut.setEnabled(false);
         CopyBut.setEnabled(false);

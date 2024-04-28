@@ -223,6 +223,7 @@ public class QUIZ extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setAlwaysOnTop(true);
         setBackground(new java.awt.Color(255, 153, 0));
         setForeground(java.awt.Color.orange);
         setUndecorated(true);

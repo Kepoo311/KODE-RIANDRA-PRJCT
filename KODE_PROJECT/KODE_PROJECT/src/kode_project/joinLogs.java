@@ -4,6 +4,7 @@
  */
 package kode_project;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
@@ -21,22 +22,21 @@ public class joinLogs extends javax.swing.JFrame {
     /**
      * Creates new form joinLogs
      */
-    
     Timer timer;
+
     public joinLogs(String QuizID) {
         initComponents();
         displayList(QuizID);
-        Timer timer =  new Timer(2000, new ActionListener() {
+        Timer timer = new Timer(2000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 displayList(QuizID);
                 System.out.println(".actionPerformed()");
             }
         });
-        
-        
-        this.timer =  timer;
-        
+
+        this.timer = timer;
+
         timer.start();
     }
 
@@ -51,13 +51,16 @@ public class joinLogs extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         joinLIST = new javax.swing.JList<>();
+        jPanel3 = new javax.swing.JPanel();
+        closeButton = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setAlwaysOnTop(true);
+        setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(14, 31, 52));
@@ -68,22 +71,12 @@ public class joinLogs extends javax.swing.JFrame {
         jLabel1.setText("Join Logs");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(214, 23, 144, -1));
 
-        jButton1.setBackground(new java.awt.Color(25, 48, 78));
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Close");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(473, 13, 80, 50));
-
         jLabel2.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("* Auto refresh in 2 second");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 570, 80));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 570, 80));
 
         jPanel2.setBackground(new java.awt.Color(10, 14, 24));
 
@@ -101,64 +94,132 @@ public class joinLogs extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(15, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 549, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(46, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 570, 530));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 570, 560));
 
-        pack();
+        jPanel3.setBackground(new java.awt.Color(0, 0, 0));
+
+        closeButton.setFont(new java.awt.Font("Montserrat", 1, 24)); // NOI18N
+        closeButton.setForeground(new java.awt.Color(255, 255, 255));
+        closeButton.setText("X");
+        closeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                closeButtonMousePressed(evt);
+            }
+        });
+
+        jLabel3.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                jLabel3MouseDragged(evt);
+            }
+        });
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel3MousePressed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 541, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(closeButton)
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(closeButton)
+                .addGap(0, 10, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 570, 40));
+
+        setSize(new java.awt.Dimension(568, 642));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void displayList(String QuizID) {
-    try {
-        String sql = "SELECT * FROM temp_jointb WHERE quizid = ?";
-        java.sql.Connection conn = (java.sql.Connection) koneksi.koneksiDB(); 
-        PreparedStatement psmt = conn.prepareStatement(sql);
-        psmt.setString(1, QuizID);
-        ResultSet rs = psmt.executeQuery();
-
-        DefaultListModel<String> model = new DefaultListModel<>(); // Specify the type of elements in the model
-
-        while (rs.next()) {
-            String status = rs.getString("status");
-            String nama = rs.getString("nama");
-
-            String message;
-            if (null == status) {
-                // Handle other statuses if needed
-                message = ""; // Placeholder for now
-            } else message = switch (status) {
-                case "join" -> nama + " Joined waiting room!";
-                case "ngerjain" -> nama + " Started doing the quiz!";
-                default -> "";
-            }; // Handle other statuses if needed
-            // Placeholder for now
-            
-
-            model.addElement(message);
-        }
-
-        joinLIST.setModel(model);
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, e.getMessage());
-    }
-}
-
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void closeButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMousePressed
         this.dispose();
         timer.stop();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_closeButtonMousePressed
+
+    int mouseX;
+    int mouseY;
+    
+    private void jLabel3MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseDragged
+       int korX = evt.getXOnScreen();
+       int korY = evt.getYOnScreen();
+       
+       this.setLocation(korX-mouseX, korY-mouseY);
+    }//GEN-LAST:event_jLabel3MouseDragged
+
+    private void jLabel3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MousePressed
+        mouseX = evt.getX();
+        mouseY = evt.getY();
+    }//GEN-LAST:event_jLabel3MousePressed
+
+    private void displayList(String QuizID) {
+        try {
+            String sql = "SELECT * FROM temp_jointb WHERE quizid = ?";
+            java.sql.Connection conn = (java.sql.Connection) koneksi.koneksiDB();
+            PreparedStatement psmt = conn.prepareStatement(sql);
+            psmt.setString(1, QuizID);
+            ResultSet rs = psmt.executeQuery();
+
+            DefaultListModel<String> model = new DefaultListModel<>(); // Specify the type of elements in the model
+
+            while (rs.next()) {
+                String status = rs.getString("status");
+                String nama = rs.getString("nama");
+
+                String message;
+                if (null == status) {
+                    // Handle other statuses if needed
+                    message = ""; // Placeholder for now
+                } else {
+                    message = switch (status) {
+                        case "join" ->
+                            nama + " Joined waiting room!";
+                        case "ngerjain" ->
+                            nama + " Started doing the quiz!";
+                        default ->
+                            "";
+                    }; // Handle other statuses if needed
+                }            // Placeholder for now
+
+                model.addElement(message);
+            }
+
+            joinLIST.setModel(model);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {
+        // Menambahkan kode untuk menghentikan Timer
+        timer.stop();
+    }
 
     /**
      * @param args the command line arguments
@@ -196,11 +257,13 @@ public class joinLogs extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel closeButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<String> joinLIST;
     // End of variables declaration//GEN-END:variables
